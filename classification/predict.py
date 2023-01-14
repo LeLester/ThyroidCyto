@@ -2,13 +2,14 @@ import os
 import json
 import math
 import numpy as np
+import sys
 import torch
 from PIL import Image
 from torchvision import transforms
 import matplotlib.pyplot as plt
 from utils import GradCAM, show_cam_on_image, center_crop_img, read_split_data_5folds
 from model import swin_large_patch4_window7_224_in22k as create_model
-
+# get all CAM from test set
 
 class ResizeTransform:
     def __init__(self, im_h: int, im_w: int):
@@ -65,8 +66,9 @@ def main(img_path, target_class, target):
     img = center_crop_img(img, img_size)
     grayscale_cam = grayscale_cam[0, :]
     visualization = show_cam_on_image(img / 255., grayscale_cam, use_rgb=True)
-    print(visualization.shape)
     im = Image.fromarray(visualization)
+    if os.path.exists("dataset/CAM/"+str(target)) is False:
+        os.makedirs("dataset/CAM/"+str(target))
     im.save("dataset/CAM/"+str(target)+"/"+img_path.split('/')[-1])
 
 
@@ -74,12 +76,13 @@ if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = create_model(num_classes=6).to(device)
     model_weight_path = "weights/model-133.pth"
-    _, _, test_images_path, test_images_label = read_split_data_5folds("dataset/dataset_new/",0.2)
+    _, _, test_images_path, test_images_label = read_split_data_5folds("dataset/dataset_224/",0.2)
     model.load_state_dict(torch.load(model_weight_path, map_location=device))
+    if os.path.exists("dataset/CAM") is False:
+        os.makedirs("dataset/CAM")
 
     for i in range(len(test_images_path)):
         print("\r", end="")
-        print("Progress: {}%: ".format(100 * i/ test_images_path.__len__()), end="")
+        print("Progress: {}% ".format(100 * i/ test_images_path.__len__()), end="")
+        sys.stdout.flush()
         main(test_images_path[i],  model, test_images_label[i]+1)
-
-

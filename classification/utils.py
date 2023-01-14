@@ -7,10 +7,6 @@ import cv2
 import numpy as np
 import torch
 from tqdm import tqdm
-
-# import matplotlib.pyplot as plt
-
-
 # get train、val、test
 
 def read_split_data_5folds(root: str, test_rate: float = 0.2):

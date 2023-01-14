@@ -10,6 +10,7 @@ from PIL import Image
 from torchvision import transforms
 from model import swin_large_patch4_window7_224_in22k as create_model
 import openslide
+# get visualization of WSI
 
 
 def main(imgs,model):
@@ -53,7 +54,7 @@ save_path = "/home/jiangli/yx/thyroid/WSI-Visualization/" + str(classification)
 
 if __name__ == '__main__':
     WSIs = os.listdir(select_patch_path )
-    device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = create_model(num_classes=6).to(device)
     model_weight_path = weight_path
     model.load_state_dict(torch.load(model_weight_path, map_location=device))
@@ -66,7 +67,6 @@ if __name__ == '__main__':
         slide = openslide.OpenSlide(Slide_path + "/" + WSI + ".svs")
         X = slide.level_dimensions[0][0]
         Y = slide.level_dimensions[0][1]
-        print("X = ", X, " Y=", Y)
 
         visualization = 150 * np.ones((X//224, Y//224, 3),dtype=np.uint8)
         pics = os.listdir(WSI_path)
@@ -107,7 +107,7 @@ if __name__ == '__main__':
         visualization = Image.fromarray(visualization)
         visualization.save(save_path + "/" + WSI + ".png")
 
-        print("WSI：", WSI, " patches".format(numpy.array(c).sum())," , result：")
+        print("WSI：", WSI, " patches {}".format(numpy.array(c).sum())," , result：")
         for i in range(6):
             print("patch {}: ".format(i+1), c[i])
     end = time.time()
