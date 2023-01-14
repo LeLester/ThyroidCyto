@@ -5,6 +5,8 @@ import torch.nn.functional as functional
 import matlab.engine as engine
 import matlab
 
+device = torch.device('cpu')
+eng = engine.start_matlab()
 
 def acc(n, l_path, p_path):
     re = []
@@ -76,10 +78,6 @@ def accelerate_95(f_path):
                 rate.append(1 / (count / (r.shape[0] * r.shape[1] * r.shape[2])))
                 break
     return rate
-
-
-device = torch.device('cpu')
-eng = engine.start_matlab()
 
 
 def phasecong2Matlab(inputTensor):

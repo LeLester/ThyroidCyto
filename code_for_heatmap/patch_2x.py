@@ -4,7 +4,10 @@ from PIL import Image
 import os
 import numpy as np
 from tqdm import tqdm
-
+"""
+This file is used for cutting wsi into 2x image.
+You can change the size of 2x image by changing Nwidth, Nheight and level.
+"""
 
 root = '/home/jiangli/zjc/wsi_left'
 d = os.listdir(root)

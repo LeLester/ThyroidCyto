@@ -19,6 +19,7 @@ def get_2x(data_name):
             img.save(os.path.join(result_path, file))
 
 
+# Get the location of 2x image, used for located images
 def build_locate(data):
     locate_point_x = []
     locate_point_y = []
@@ -30,6 +31,7 @@ def build_locate(data):
     return locate_point_x, locate_point_y
 
 
+# Function of getting 20x image
 def cut_20x(root, data):
     l_x, l_y = build_locate(data)
     slide = openslide.OpenSlide(root)
@@ -49,6 +51,7 @@ def cut_20x(root, data):
     slide.close()
 
 
+# Get the label of 2x image
 def make_label(file_dir, data):
     save_dir = '/home/jiangli/zjc/left/2x_npy_gt'
     l_x, l_y = build_locate(data)
@@ -81,8 +84,6 @@ wsi_path = '/home/jiangli/zjc/wsi_left'
 for f_dir in os.listdir(wsi_path):
     for fi in os.listdir(os.path.join(wsi_path, f_dir)):
         print(fi)
-        # get_2x(file[:-4])
-        # file_name = file + '.svs'
         wsi = os.path.join(wsi_path, f_dir, fi)
         make = os.path.join('/home/jiangli/zjc/left/2x', fi[:-4])
         mask = os.path.join(file_path, fi[:-4])

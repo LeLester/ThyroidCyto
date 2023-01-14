@@ -1,7 +1,6 @@
 import argparse
 import logging
 import os
-os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 import random
 import numpy as np
 import sys
@@ -12,6 +11,8 @@ from dataset import CADataset
 from network import *
 from loss import *
 from torchvision import transforms
+
+os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--max_epochs', type=int, default=2500, help='maximum epoch number to train')
