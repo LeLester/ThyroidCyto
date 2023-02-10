@@ -75,7 +75,7 @@ def main(img_path, target_class, target):
 if __name__ == '__main__':
     device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
     model = create_model(num_classes=6).to(device)
-    model_weight_path = "weights/model-133.pth"
+    model_weight_path = ""
     _, _, test_images_path, test_images_label = read_split_data_5folds("dataset/dataset_224/",0.2)
     model.load_state_dict(torch.load(model_weight_path, map_location=device))
     if os.path.exists("dataset/CAM") is False:
