@@ -53,8 +53,8 @@ def cut_20x(root, data):
     slide.close()
 
 
-wsi_path = '/home/jiangli/yx/thyroid/WSI-target'
-file_path = '/home/jiangli/yx/thyroid/2x_label_dir'
+wsi_path = ''
+file_path = ''
 
 for file in os.listdir(wsi_path):
 
